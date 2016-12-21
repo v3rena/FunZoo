@@ -13,16 +13,11 @@ GO
 
 CREATE TABLE Gehege
 (
-GehegeID numeric(38,0) not null,
+GehegeID numeric(38,0) identity(1,1) PRIMARY KEY,
 Name varchar(50) not null,
 Klimazone varchar(50) not null
 );
 
-ALTER TABLE Gehege
- ADD CONSTRAINT Gehege_PK
- PRIMARY KEY 
-   CLUSTERED (GehegeID ASC)
-GO
 
 
 ----------------------------------------------
@@ -31,18 +26,13 @@ GO
 
 CREATE TABLE Tier
 (
-TierID numeric(38,0) not null,
+TierID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 FK_Gehege_GehegeID numeric(38,0) not null,
 Name varchar(50) not null,
 Geschlecht char(1) not null,
 Spezies varchar(50) not null
 );
 
-ALTER TABLE Tier
- ADD CONSTRAINT Tier_PK
- PRIMARY KEY 
-   CLUSTERED (TierID ASC)
-GO
 
 ALTER TABLE Tier  WITH CHECK ADD  CONSTRAINT Tier_Gehege_FK FOREIGN KEY(FK_Gehege_GehegeID)
 REFERENCES Gehege (GehegeID)
@@ -58,16 +48,11 @@ GO
 
 CREATE TABLE Abteilung
 (
-AbteilungID numeric(38,0) not null,
+AbteilungID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 --Abteilungsleiter numeric(38,0) null,
 Name varchar(50) not null
 );
 
-ALTER TABLE Abteilung
- ADD CONSTRAINT Abteilung_PK
- PRIMARY KEY 
-   CLUSTERED (AbteilungID ASC)
-GO
 
 --ALTER TABLE Abteilung  WITH CHECK ADD  CONSTRAINT Abteilung_Tierpleger_FK FOREIGN KEY(Abteilungsleiter)
 --REFERENCES Tierpfleger (TierpflegerID)
@@ -80,17 +65,13 @@ GO
 
 CREATE TABLE Tierpfleger
 (
-TierpflegerID numeric(38,0) not null,
+TierpflegerID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 FK_Abteilung_AbteilungID numeric(38,0) not null,
 Vorname varchar(50) not null,
 Nachname varchar(50) not null
 );
 
-ALTER TABLE Tierpfleger
- ADD CONSTRAINT Tierpfleger_PK
- PRIMARY KEY 
-   CLUSTERED (TierpflegerID ASC)
-GO
+
 
 ALTER TABLE Tierpfleger  WITH CHECK ADD  CONSTRAINT Tierpfleger_Abteilung_FK FOREIGN KEY(FK_Abteilung_AbteilungID)
 REFERENCES Abteilung (AbteilungID)
@@ -122,18 +103,13 @@ GO
 
 CREATE TABLE Lieferant
 (
-LieferantID numeric(38,0) not null,
+LieferantID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 Name varchar(50) not null,
 Ort varchar(50) not null,
 Straﬂe varchar(50) not null,
 Telefonnummer varchar(50) not null
 );
 
-ALTER TABLE Lieferant
- ADD CONSTRAINT Lieferant_PK
- PRIMARY KEY 
-   CLUSTERED (LieferantID ASC)
-GO
 
 
 ----------------------------------------------
@@ -142,16 +118,11 @@ GO
 
 CREATE TABLE Futter
 (
-FutterID numeric(38,0) not null,
+FutterID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 Name varchar(50) not null,
 Bestand float null
 );
 
-ALTER TABLE Futter
- ADD CONSTRAINT Futter_PK
- PRIMARY KEY 
-   CLUSTERED (FutterID ASC)
-GO
 
 
 ----------------------------------------------
@@ -200,16 +171,11 @@ GO
 
 CREATE TABLE Bestellung
 (
-BestellungID numeric(38,0) not null,
+BestellungID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
 FK_Lieferant_LieferantID numeric(38,0) not null,
 Datum datetime2(0) null
 );
 
-ALTER TABLE Bestellung
- ADD CONSTRAINT Bestellung_PK
- PRIMARY KEY 
-   CLUSTERED (BestellungID ASC)
-GO
 
 ALTER TABLE Bestellung  WITH CHECK ADD  CONSTRAINT Bestellung_Lieferant_FK FOREIGN KEY(FK_Lieferant_LieferantID)
 REFERENCES Lieferant (LieferantID)
@@ -222,17 +188,12 @@ GO
 
 CREATE TABLE Bestellungsposten
 (
-BestellungspostenID numeric(38,0) not null,
 FK_Bestellung_BestellungID numeric(38,0) not null,
 FK_Futter_FutterID numeric(38,0) not null,
 Menge float null
 );
 
-ALTER TABLE Bestellungsposten
- ADD CONSTRAINT Bestellungsposten_PK
- PRIMARY KEY 
-   CLUSTERED (BestellungspostenID ASC)
-GO
+
 
 ALTER TABLE Bestellungsposten  WITH CHECK ADD  CONSTRAINT Bestellungsposten_Bestellung_FK FOREIGN KEY(FK_Bestellung_BestellungID)
 REFERENCES Bestellung (BestellungID)
@@ -241,3 +202,5 @@ GO
 ALTER TABLE Bestellungsposten  WITH CHECK ADD  CONSTRAINT Bestellungsposten_Futter_FK FOREIGN KEY(FK_Futter_FutterID)
 REFERENCES Futter (FutterID)
 GO
+
+ALTER TABLE Bestellungsposten ADD CONSTRAINT Bestellungsposten_PK PRIMARY KEY (FK_Bestellung_BestellungID, FK_Futter_FutterID);

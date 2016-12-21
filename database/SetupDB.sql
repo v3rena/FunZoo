@@ -16,13 +16,13 @@ CREATE DATABASE ZooTycoon
 
 ON PRIMARY (
   Name = 'ZooTycoon_DATA',
-  Filename='C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ZooTycoon_DATA.mdf',
+  Filename='C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\ZooTycoon_DATA.mdf',
   Size = 10MB,
   Filegrowth = 10%
 )
 LOG ON (
   Name = 'ZooTycoon_Log',
-  Filename='C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ZooTycoon_LOG.ldf',
+  Filename='C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\ZooTycoon_LOG.ldf',
   Size = 10MB,
   Filegrowth = 10%
 )
