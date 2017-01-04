@@ -59,6 +59,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Abteil
 DROP TABLE [dbo].[Abteilung]
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Abteilung]') AND TYPE IN (N'U'))
+ALTER TABLE [dbo].[Abteilung] DROP CONSTRAINT [Abteilung_Tierpfleger_FK]
+GO
+
 /****** Object:  Table [dbo].[Tierpfleger]    Script Date: 20.12.2016 13:11:19 ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Tierpfleger]') AND TYPE IN (N'U'))
 DROP TABLE [dbo].[Tierpfleger]
@@ -183,9 +187,9 @@ FOREIGN KEY(FK_Abteilung_AbteilungID)
 REFERENCES Abteilung (AbteilungID)
 GO
 
--------------
+----------------------------------------------
 --Tabelle Abteilung, Fremdschlüssel hinzufügen
--------------
+----------------------------------------------
 
 ALTER TABLE Abteilung  WITH CHECK ADD CONSTRAINT Abteilung_Tierpfleger_FK 
 FOREIGN KEY(Abteilungsleiter)
