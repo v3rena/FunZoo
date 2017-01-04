@@ -152,7 +152,6 @@ GO
 ALTER TABLE Tier  WITH CHECK ADD  CONSTRAINT Geschlecht CHECK  ((Geschlecht='m' OR Geschlecht='w'))
 GO
 
-
 ----------------------------------------------
 --Tabelle Abteilung
 ----------------------------------------------
@@ -160,14 +159,9 @@ GO
 CREATE TABLE Abteilung
 (
 AbteilungID numeric(38,0) IDENTITY(1,1) PRIMARY KEY,
---Abteilungsleiter numeric(38,0) null,
+Abteilungsleiter numeric(38,0) null,
 Name varchar(50) not null
 );
-
-
---ALTER TABLE Abteilung  WITH CHECK ADD  CONSTRAINT Abteilung_Tierpleger_FK FOREIGN KEY(Abteilungsleiter)
---REFERENCES Tierpfleger (TierpflegerID)
---GO
 
 
 ----------------------------------------------
@@ -184,8 +178,18 @@ Nachname varchar(50) not null
 
 
 
-ALTER TABLE Tierpfleger  WITH CHECK ADD  CONSTRAINT Tierpfleger_Abteilung_FK FOREIGN KEY(FK_Abteilung_AbteilungID)
+ALTER TABLE Tierpfleger  WITH CHECK ADD  CONSTRAINT Tierpfleger_Abteilung_FK
+FOREIGN KEY(FK_Abteilung_AbteilungID)
 REFERENCES Abteilung (AbteilungID)
+GO
+
+-------------
+--Tabelle Abteilung, Fremdschlüssel hinzufügen
+-------------
+
+ALTER TABLE Abteilung  WITH CHECK ADD CONSTRAINT Abteilung_Tierpfleger_FK 
+FOREIGN KEY(Abteilungsleiter)
+REFERENCES Tierpfleger (TierpflegerID)
 GO
 
 
@@ -303,8 +307,6 @@ FK_Bestellung_BestellungID numeric(38,0) not null,
 FK_Futter_FutterID numeric(38,0) not null,
 Menge float null
 );
-
-
 
 ALTER TABLE Bestellungsposten  WITH CHECK ADD  CONSTRAINT Bestellungsposten_Bestellung_FK FOREIGN KEY(FK_Bestellung_BestellungID)
 REFERENCES Bestellung (BestellungID)
