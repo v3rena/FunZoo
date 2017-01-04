@@ -130,7 +130,7 @@ CREATE TABLE Gehege
 (
 GehegeID numeric(38,0) identity(1,1) PRIMARY KEY,
 Name varchar(50) not null,
-Klimazone varchar(50) not null
+Oekozone varchar(50) not null
 );
 
 
@@ -203,7 +203,7 @@ GO
 
 CREATE TABLE Tier_Tierpfleger
 (
-FK_Tier_TierID numeric(38,0) not null,
+FK_Tier_TierID numeric(38,0) null,
 FK_Tierpfleger_TierpflegerID numeric(38,0) not null
 );
 
@@ -250,8 +250,8 @@ Bestand float null
 
 CREATE TABLE Tier_Futter
 (
-FK_Tier_TierID numeric(38,0) not null,
-FK_Futter_FutterID numeric(38,0) not null,
+FK_Tier_TierID numeric(38,0) null,
+FK_Futter_FutterID numeric(38,0) null,
 Futterbedarf_pro_Tag float null
 );
 
