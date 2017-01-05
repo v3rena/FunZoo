@@ -17,11 +17,12 @@ INSERT INTO Gehege (Name, Oekozone) VALUES ('Braunbärenanlage', 'Boreale Zone');
 --Daten Tier
 ---------------------------------------------
 
-INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Xenon', 'm', 'Eisbär', '1');
+INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Xenon', 'm', 'Eisbaer', '1');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Splash', 'w', 'Seehund', '2');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Roberto', 'm', 'Baikalrobbe', '3');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Zitha', 'w', 'Grevyzebra ', '4');
-INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kugelschreibär', 'm', 'Braunbär', '5');
+INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kugelschreibär', 'm', 'Braunbaer', '5');
+INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kuegelchen', 'w', 'Braunbaer', '5');
 
 ---------------------------------------------
 --Daten Abteilung
