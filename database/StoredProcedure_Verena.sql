@@ -6,12 +6,12 @@
 --STORED PROCEDUREs Tiere hinzufügen und löschen
 -- Autor: Verena Pötzl
 --------------------------------------------------------------------------------
---BEISPIEL FÜR EXECUTE:
+--USAGE:
 /*
 USE ZooTycoon;
 GO
 EXECUTE InsertAnimal @Gehege_Name = 'Eisbärenwelt', @Tier_Name = 'Teddy', @Tier_Geschlecht = 'm', @Tier_Spezies = 'Eisbär', 
-@Tierpfleger_Vorname = 'Karl', @Tierpfleger_Nachname = 'Koller', @Futter_Name = 'Fleisch', @Futterbedarf_pro_Tag = 50;
+@Tierpfleger_Vorname = 'Eva', @Tierpfleger_Nachname = 'Rosenberger', @Futter_Name = 'Eisbärenmischung (Gras, Fische)', @Futterbedarf_pro_Tag = 50;
 GO
 
 USE ZooTycoon;
