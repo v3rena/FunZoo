@@ -5,11 +5,11 @@ GO
 --Daten Gehege
 ---------------------------------------------
 
-INSERT INTO Gehege (Name, Oekozone) VALUES ('Eisbärenwelt', 'Polare und Subpolare Zone');
+INSERT INTO Gehege (Name, Oekozone) VALUES ('Eisbaerenwelt', 'Polare und Subpolare Zone');
 INSERT INTO Gehege (Name, Oekozone) VALUES ('Seehundanlage', 'Polare und Subpolare Zone');
 INSERT INTO Gehege (Name, Oekozone) VALUES ('Robbenanlage', 'Polare und Subpolare Zone');
 INSERT INTO Gehege (Name, Oekozone) VALUES ('Africambo', 'Sommerfeuchte Tropen');
-INSERT INTO Gehege (Name, Oekozone) VALUES ('Braunbärenanlage', 'Boreale Zone');
+INSERT INTO Gehege (Name, Oekozone) VALUES ('Braunbaerenanlage', 'Boreale Zone');
 
 --SELECT * FROM Gehege
 
@@ -21,7 +21,7 @@ INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Xenon'
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Splash', 'w', 'Seehund', '2');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Roberto', 'm', 'Baikalrobbe', '3');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Zitha', 'w', 'Grevyzebra ', '4');
-INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kugelschreibär', 'm', 'Braunbaer', '5');
+INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kugelschreibaer', 'm', 'Braunbaer', '5');
 INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kuegelchen', 'w', 'Braunbaer', '5');
 
 ---------------------------------------------
@@ -54,9 +54,9 @@ INSERT INTO Tier_Tierpfleger(FK_Tier_TierID, FK_Tierpfleger_TierpflegerID) VALUE
 ---------------------------------------------
 --Daten Futter
 ---------------------------------------------
-INSERT INTO Futter(Name, Bestand) VALUES ('Zebra, Muntjaks & Tapire Strukturmsli 15 kg', '10');
-INSERT INTO Futter(Name, Bestand) VALUES ('Eisbärenmischung (Gras, Fische)', '5');
-INSERT INTO Futter(Name, Bestand) VALUES ('Braunbärenmischung (Gras, Walnüsse, Rehfleisch)', '100');
+INSERT INTO Futter(Name, Bestand) VALUES ('Zebra, Muntjaks & Tapire Strukturmuesli 15 kg', '10');
+INSERT INTO Futter(Name, Bestand) VALUES ('Eisbaerenmischung (Gras, Fische)', '5');
+INSERT INTO Futter(Name, Bestand) VALUES ('Braunbaerenmischung (Gras, Walnuesse, Rehfleisch)', '100');
 INSERT INTO Futter(Name, Bestand) VALUES ('Seehundmischung (Fische)', '5');
 INSERT INTO Futter(Name, Bestand) VALUES ('Robbenmischung (Fische)', '7');
 
@@ -76,10 +76,10 @@ INSERT INTO Tier_Futter(FK_Tier_TierID, FK_Futter_FutterID, Futterbedarf_pro_Tag
 ---------------------------------------------
 --Daten Lieferant
 ---------------------------------------------
-INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('FritzfratzBärenfutter GmbH', 'Bärenstrasse 5', '2121 Bärental', '03662/3416');
-INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('Polare Spezialitäten', 'Fischereistrasse 4', '2223 Fischau', '04662/3481');
+INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('FritzfratzBaerenfutter GmbH', 'Baerenstrasse 5', '2121 Baerental', '03662/3416');
+INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('Polare Spezialitaeten', 'Fischereistrasse 4', '2223 Fischau', '04662/3481');
 INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('Afrikawohl', 'Savannengasse 2 ', '1223 Donaustadt', '01234/8264');
-INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('BraunbärenProtein', 'Bärenberg 1', '5243 Unterau', '03759/2840');
+INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('BraunbaerenProtein', 'Baerenberg 1', '5243 Unterau', '03759/2840');
 INSERT INTO Lieferant(Name, Strasse, Ort, Telefonnummer) VALUES ('FleischereiZoo', 'Rehgasse 2', '1423 Reichenau', '01249/9056');
 
 ---------------------------------------------
