@@ -1,0 +1,96 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+h1 {
+	color: #FFD96A;
+	font-size: 60pt;
+}
+
+h2 {
+	color: #FFD96A;
+	margin: 10px;
+}
+
+body {
+	background-image: url("pics/savanne.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: bottom;
+	
+	overflow: hidden;
+}
+
+form {
+	padding-left: 30px;
+}
+
+#header {
+	height: 120px;
+	width: 100vw;
+	text-align: left;
+	text-shadow: 2px 2px #000000;
+}
+
+#menu {
+	width: 140px;
+	height: 100vh;
+	padding: 100px 0 20px 0;
+	margin-right: 40px;
+	
+	float: left;
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	
+	background-color: rgba(0,0,0,0.8);
+}
+
+#content {
+	float: left;
+	
+	width: calc(100vw - 200px);
+	height: calc(100vh - 140px);
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	
+	background-color: rgba(0,0,0,0.3);
+}
+
+.small {
+	height: 30px;
+	width:  130px;
+}
+
+.big {
+	height: 150px;
+	width:  150px;
+}
+
+.tile {
+	box-sizing: borderbox;
+	
+	margin-bottom: 10px;
+	padding: 10px;
+	background-color: #FF9A00;
+	
+	text-align: center;
+	
+	/*box-shadow: 2px 2px 2px 0px #999;*/
+	/*float: left;*/
+}
+
+.tileMouseOver {
+	cursor: pointer;
+	background-color: #FF7D20;
+	width: 140px;
+}
+
+.tileMouseDown {
+	background-color: #FF4511;
+}

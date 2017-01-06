@@ -6,6 +6,14 @@
 -- Textfeld in dem Lieferantenname eingegben wird
 -- Datum und ID müssen nicht eingegeben werden
 
+-- Usage:
+/*
+USE ZooTycoon;
+GO
+EXECUTE CreateOrder @Lieferantenname = 'TestLieferant';
+Go
+*/
+
 use ZooTycoon
 
 if object_id ('CreateOrder', 'P') is not null
@@ -46,6 +54,14 @@ GO
 -- Textfeld für Eingabe der Bestellungsnummer (Fehlermeldung falls Bestellung nicht existiert)
 -- Textfeld für Eingabe der Futterart (Fehlermeldung falls der Lieferant diese Futterart nicht anbietet)
 -- Textfeld für Eingabe der Menge
+
+-- Usage:
+/*
+USE ZooTycoon;
+GO
+EXECUTE CreateOrderItem @Bestellungsnummer = 1, @Futterart = 'Fleisch', @Menge = 100;
+Go
+*/
 
 use ZooTycoon
 
