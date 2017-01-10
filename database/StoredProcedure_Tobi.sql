@@ -22,7 +22,8 @@ go
 
 CREATE PROCEDURE CreateOrder
 
-	@Lieferantenname varchar(50) = NULL
+	@Lieferantenname varchar(50) = NULL,
+	@OrderID int OUTPUT
 
 AS
 BEGIN
@@ -40,6 +41,8 @@ BEGIN
     BEGIN
       INSERT INTO Bestellung (FK_Lieferant_LieferantID, Datum)
       VALUES ((SELECT LieferantID FROM Lieferant WHERE Name = @Lieferantenname), CURRENT_TIMESTAMP)
+
+	  SELECT @OrderID = SCOPE_IDENTITY()
       COMMIT TRANSACTION
     END
 
