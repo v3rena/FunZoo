@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
 --Zoo Tycoon Create Database
---Tobias Nemecek, Verena Pötzl, Katharina Schallerl, Matthias Wögerbauer
+--Tobias Nemecek, Verena Pï¿½tzl, Katharina Schallerl, Matthias Wï¿½gerbauer
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 --TRIGGER
 --------------------------------------------------------------------------------
 
---1. Trigger: Tiere hinzufügen und löschen nur mittels Stored Procedure
+--1. Trigger: Tiere hinzufï¿½gen und lï¿½schen nur mittels Stored Procedure
 
 if object_id ('TR_InsertDeleteAnimals', 'TR') is not null
 	drop trigger TR_InsertDeleteAnimals;
@@ -16,5 +16,27 @@ Create Trigger TR_InsertDeleteAnimals
 on  Tier
 instead of insert, delete
 as
-RAISERROR ('Benutzen Sie die Stored Procedures InsertAnimal und DeleteAnimal um Tiere hinzuzufügen und zu löschen!', 16, 10);
+RAISERROR ('Benutzen Sie die Stored Procedures InsertAnimal und DeleteAnimal um Tiere hinzuzufï¿½gen und zu lï¿½schen!', 16, 10);
+GO
+
+--2. Trigger: Futter-Restbestand unter 5kg
+
+if object_id ('TR_UpdateFood', 'TR') is not null
+	drop trigger TR_UpdateFood;
+go
+
+Create Trigger TR_UpdateFood
+on  Futter
+after update
+as
+	BEGIN
+		DECLARE @NeuerBestand float
+		Declare @Name varchar(50)
+		SELECT @NeuerBestand = Bestand FROM INSERTED
+		SELECT @Name = Name FROM INSERTED
+		if (@NeuerBestand < 5)
+		BEGIN
+			RAISERROR ('Restbestand von @Name unter 5kg!', 16, 10);
+		END
+	END
 GO
