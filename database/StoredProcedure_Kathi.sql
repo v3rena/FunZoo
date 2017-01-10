@@ -1,18 +1,18 @@
 --TODO: error handling
 --vertraue keinem userInput
---ev. Warnung anpassen, für welche Tierart wenig Futter tatsächlich wenig ist.
+--ev. Warnung anpassen, fï¿½r welche Tierart wenig Futter tatsï¿½chlich wenig ist.
 --Index auf Tier_Futter, beide Foreign Keys
---transaction level: alle selektierten 
+--transaction level: alle selektierten
 
-IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL   
-    DROP PROCEDURE fuetterung;  
+IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL
+    DROP PROCEDURE fuetterung;
 GO
 
 create procedure fuetterung
 	@species varchar(38)
 as
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-BEGIN TRANSACTION;  
+BEGIN TRANSACTION;
 
 	--set nocount on
 	declare @Restbestand float(38)
@@ -33,9 +33,9 @@ if @Restbestand < 0
 		print 'nicht genug Futter'
 	end
 else
-	begin	
-		update Futter 
-			set Bestand=@Restbestand 
+	begin
+		update Futter
+			set Bestand=@Restbestand
 			where FutterID = @FutterID
 
 		if @Restbestand < 2
@@ -43,7 +43,7 @@ else
 				print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
 			end
 	end
-COMMIT TRANSACTION;  
+COMMIT TRANSACTION;
 go
 
 execute fuetterung Grevyzebra;
