@@ -17,14 +17,15 @@ BEGIN TRANSACTION;
 	--set nocount on
 	declare @Restbestand float(38)
 	declare @FutterID numeric(38)
-
+	
 	select @FutterID = (
 							select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
 								(select TOP 1 TierID from Tier where Spezies = @species)
 						);
 	select @Restbestand = (
 		(select Bestand from Futter where FutterID = @FutterID)
-		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Futter_FutterID = @FutterID)
+		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in 
+				(select TierID from Tier where Spezies = @species)))
 	);
 print @Restbestand
 
