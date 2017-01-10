@@ -1,60 +1,83 @@
 --TODO: error handling
 --vertraue keinem userInput
---ev. Warnung anpassen, für welche Tierart wenig Futter tatsächlich wenig ist.
+--ev. Warnung anpassen, fï¿½r welche Tierart wenig Futter tatsï¿½chlich wenig ist.
 --Index auf Tier_Futter, beide Foreign Keys
---transaction level: alle selektierten 
+--transaction level: alle selektierten
 
-IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL   
-    DROP PROCEDURE fuetterung;  
+IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL
+    DROP PROCEDURE fuetterung;
 GO
 
 create procedure fuetterung
 	@species varchar(38)
 as
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
 BEGIN TRY
-	BEGIN TRANSACTION;  
+BEGIN TRANSACTION;
 
-		set nocount on
-		declare @Restbestand float(38)
-		declare @FutterID numeric(38)
-		
-		select @FutterID = (
-								select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
-									(select TOP 1 TierID from Tier where Spezies = @species)
-							);
-		select @Restbestand = (
-			(select Bestand from Futter where FutterID = @FutterID)
-			- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in 
-					(select TierID from Tier where Spezies = @species))
-		);
-	print @Restbestand
+	set nocount on
+	declare @Restbestand float(38)
+	declare @FutterID numeric(38)
 
-	if @Restbestand < 0
-		begin
-			print 'nicht genug Futter'
-		end
-	else
-		begin	
-			update Futter 
-				set Bestand=@Restbestand 
-				where FutterID = @FutterID
+  DECLARE bedarf_cursor CURSOR
+    FOR select Futterbedarf_pro_Tag as fpT from Tier_Futter where FK_Tier_TierID in
+        (select TierID from Tier where Spezies = @species)
 
-			if @Restbestand < 2
-				begin
-					print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
-				end
-		end
-	COMMIT TRANSACTION;
+	select @FutterID = (
+							select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
+								(select TOP 1 TierID from Tier where Spezies = @species)
+						);
+
+  DECLARE @Bedarf float
+  OPEN bedarf_cursor
+
+  SELECT @Restbestand = Bestand from Futter where FutterID = @FutterID
+
+  fetch next from bedarf_cursor into @Bedarf
+  while @@FETCH_STATUS = 0
+  BEGIN
+    SET @Restbestand -= @Bedarf
+    fetch next from bedarf_cursor into @Bedarf
+  END
+
+  CLOSE bedarf_cursor
+  DEALLOCATE bedarf_cursor
+
+
+  /*
+	select @Restbestand = (
+		(select Bestand from Futter where FutterID = @FutterID)
+		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in
+				(select TierID from Tier where Spezies = @species))
+	);
+  */
+print @Restbestand
+
+if @Restbestand < 0
+	begin
+		print 'nicht genug Futter'
+	end
+else
+	begin
+		update Futter
+			set Bestand=@Restbestand
+			where FutterID = @FutterID
+
+		if @Restbestand < 2
+			begin
+				print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
+			end
+	end
+COMMIT TRANSACTION;
 END TRY
 BEGIN CATCH
 	execute usp_GetErrorInfo
 	if @@trancount > 0 rollback transaction
 END CATCH
-	go
+go
 
-	
---execute fuetterung Grevyzebra;
+execute fuetterung Grevyzebra;
 
 --Select * from Tier;
 --Select * from Tier_Futter;
