@@ -12,42 +12,49 @@ create procedure fuetterung
 	@species varchar(38)
 as
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-BEGIN TRANSACTION;  
+BEGIN TRY
+	BEGIN TRANSACTION;  
 
-	--set nocount on
-	declare @Restbestand float(38)
-	declare @FutterID numeric(38)
+		set nocount on
+		declare @Restbestand float(38)
+		declare @FutterID numeric(38)
+		
+		select @FutterID = (
+								select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
+									(select TOP 1 TierID from Tier where Spezies = @species)
+							);
+		select @Restbestand = (
+			(select Bestand from Futter where FutterID = @FutterID)
+			- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in 
+					(select TierID from Tier where Spezies = @species))
+		);
+	print @Restbestand
+
+	if @Restbestand < 0
+		begin
+			print 'nicht genug Futter'
+		end
+	else
+		begin	
+			update Futter 
+				set Bestand=@Restbestand 
+				where FutterID = @FutterID
+
+			if @Restbestand < 2
+				begin
+					print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
+				end
+		end
+	COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+	execute usp_GetErrorInfo
+	if @@trancount > 0 rollback transaction
+END CATCH
+	go
+
 	
-	select @FutterID = (
-							select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
-								(select TOP 1 TierID from Tier where Spezies = @species)
-						);
-	select @Restbestand = (
-		(select Bestand from Futter where FutterID = @FutterID)
-		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in 
-				(select TierID from Tier where Spezies = @species))
-	);
-print @Restbestand
-
-if @Restbestand < 0
-	begin
-		print 'nicht genug Futter'
-	end
-else
-	begin	
-		update Futter 
-			set Bestand=@Restbestand 
-			where FutterID = @FutterID
-
-		if @Restbestand < 2
-			begin
-				print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
-			end
-	end
-COMMIT TRANSACTION;  
-go
-
-execute fuetterung Grevyzebra;
+--execute fuetterung Grevyzebra;
 
 --Select * from Tier;
 --Select * from Tier_Futter;
