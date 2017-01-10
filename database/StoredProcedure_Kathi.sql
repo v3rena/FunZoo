@@ -25,7 +25,7 @@ BEGIN TRANSACTION;
 	select @Restbestand = (
 		(select Bestand from Futter where FutterID = @FutterID)
 		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in 
-				(select TierID from Tier where Spezies = @species)))
+				(select TierID from Tier where Spezies = @species))
 	);
 print @Restbestand
 
