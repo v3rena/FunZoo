@@ -11,7 +11,7 @@ go
 
 CREATE VIEW Strukturmuesli_view
 AS
-SELECT Name, Spezies
+SELECT Tier.Name, Spezies
 FROM Tier
 INNER JOIN Tier_Futter
 ON Tier.TierID = Tier_Futter.FK_Tier_TierID
