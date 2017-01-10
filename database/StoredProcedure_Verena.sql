@@ -80,16 +80,22 @@ BEGIN
 
 	ELSE
 		BEGIN
-			INSERT INTO Tier (FK_Gehege_GehegeID, Name, Geschlecht, Spezies)
-			VALUES ((SELECT GehegeID FROM Gehege WHERE Name = @Gehege_Name), @Tier_Name, @Tier_Geschlecht, @Tier_Spezies);
+			BEGIN TRY
+				INSERT INTO Tier (FK_Gehege_GehegeID, Name, Geschlecht, Spezies)
+				VALUES ((SELECT GehegeID FROM Gehege WHERE Name = @Gehege_Name), @Tier_Name, @Tier_Geschlecht, @Tier_Spezies);
 
-			INSERT INTO Tier_Tierpfleger (FK_Tier_TierID, FK_Tierpfleger_TierpflegerID)
-			VALUES ((SELECT TierID FROM Tier WHERE Name = @Tier_Name), (SELECT TierpflegerID FROM Tierpfleger WHERE Vorname = @Tierpfleger_Vorname AND Nachname = @Tierpfleger_Nachname));
+				INSERT INTO Tier_Tierpfleger (FK_Tier_TierID, FK_Tierpfleger_TierpflegerID)
+				VALUES ((SELECT TierID FROM Tier WHERE Name = @Tier_Name), (SELECT TierpflegerID FROM Tierpfleger WHERE Vorname = @Tierpfleger_Vorname AND Nachname = @Tierpfleger_Nachname));
 
-			INSERT INTO Tier_Futter (FK_Tier_TierID, FK_Futter_FutterID, Futterbedarf_pro_Tag)
-			VALUES ((SELECT TierID FROM Tier WHERE Name = @Tier_Name), (SELECT FutterID FROM Futter WHERE Name = @Futter_Name), @Futterbedarf_pro_Tag);
+				INSERT INTO Tier_Futter (FK_Tier_TierID, FK_Futter_FutterID, Futterbedarf_pro_Tag)
+				VALUES ((SELECT TierID FROM Tier WHERE Name = @Tier_Name), (SELECT FutterID FROM Futter WHERE Name = @Futter_Name), @Futterbedarf_pro_Tag);
 			
-			COMMIT TRANSACTION
+				COMMIT TRANSACTION
+			END TRY
+			BEGIN CATCH
+				EXECUTE usp_GetErrorInfo
+				ROLLBACK TRANSACTION
+			END CATCH
 		END
 
 END
@@ -119,11 +125,17 @@ BEGIN
 	BEGIN TRANSACTION
 	SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
 
-	DELETE FROM Tier_Tierpfleger WHERE FK_Tier_TierID = (SELECT TierID FROM Tier WHERE Name = @Tier_Name);
-	DELETE FROM Tier_Futter WHERE FK_Tier_TierID = (SELECT TierID FROM Tier WHERE Name = @Tier_Name);
-	DELETE FROM Tier WHERE Name = @Tier_Name;
+	BEGIN TRY
+		DELETE FROM Tier_Tierpfleger WHERE FK_Tier_TierID = (SELECT TierID FROM Tier WHERE Name = @Tier_Name);
+		DELETE FROM Tier_Futter WHERE FK_Tier_TierID = (SELECT TierID FROM Tier WHERE Name = @Tier_Name);
+		DELETE FROM Tier WHERE Name = @Tier_Name;
 
-	COMMIT TRANSACTION
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		EXECUTE usp_GetErrorInfo
+		ROLLBACK TRANSACTION
+	END CATCH
 
 END
 GO

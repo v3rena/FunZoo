@@ -43,6 +43,7 @@ BEGIN
       VALUES ((SELECT LieferantID FROM Lieferant WHERE Name = @Lieferantenname), CURRENT_TIMESTAMP)
 
 	  SELECT @OrderID = SCOPE_IDENTITY()
+
       COMMIT TRANSACTION
     END
 
@@ -98,7 +99,68 @@ BEGIN
   ELSE
     BEGIN
       INSERT INTO Bestellungsposten (FK_Bestellung_BestellungID, FK_Futter_FutterID, Menge)
-      VALUES (@Bestellungsnummer, (SELECT FutterID FROM Futter WHERE Name = @Futterart), @Menge)
+      VALUES (@Bestellungsnummer, (SELECT FutterID FROM Futter WHERE Name = @Futterart), @Menge);
+
+      COMMIT TRANSACTION
+    END
+
+END
+GO
+
+-------------------------------------
+-- 3. Futter hinzufuegen
+-------------------------------------
+
+-- GUI:
+-- Textfeld für Eingabe des Lieferantennamens (Fehlermeldung falls Lieferant nicht existiert)
+-- Textfeld für Eingabe des Futternamens (Fehlermeldung falls die Futterart bereits in der DB ist)
+-- Textfeld für Eingabe des Preises
+
+-- Usage:
+/*
+USE ZooTycoon;
+GO
+EXECUTE AddFood @Lieferantenname = TestLieferant, @FutterName = 'Fleisch', @Preis = 10,00;
+Go
+*/
+
+use ZooTycoon
+
+if object_id ('AddFood', 'P') is not null
+	drop procedure AddFood;
+go
+
+CREATE PROCEDURE AddFood
+
+	@Lieferantenname varchar(50) = NULL,
+	@FutterName varchar(50) = NULL,
+	@Preis float = NULL
+
+AS
+BEGIN
+
+	BEGIN TRANSACTION
+	SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+  IF ((SELECT LieferantID FROM Lieferant WHERE Name = @Lieferantenname) IS NULL)
+		BEGIN
+			RAISERROR ('Lieferant existiert nicht!',10, 1)
+			ROLLBACK TRANSACTION
+		END
+	ELSE IF ((SELECT FutterID FROM Futter WHERE Name = @FutterName) IS NOT NULL)
+		BEGIN
+			RAISERROR ('Futterart existiert bereits!',10, 1)
+			ROLLBACK TRANSACTION
+		END
+
+  ELSE
+    BEGIN
+			INSERT INTO Futter (Name, Bestand)
+			VALUES (@FutterName, 0);
+
+      INSERT INTO Lieferant_Futter (FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis)
+      VALUES ((SELECT LieferantID FROM Lieferant WHERE Name = @Lieferantenname), (SELECT FutterID FROM Futter WHERE Name = @FutterName), @Preis);
+
       COMMIT TRANSACTION
     END
 
