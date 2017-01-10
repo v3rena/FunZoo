@@ -36,7 +36,9 @@ as
 		SELECT @Name = Name FROM INSERTED
 		if (@NeuerBestand < 5)
 		BEGIN
-			RAISERROR ('Restbestand von @Name unter 5kg!', 16, 10);
+			DECLARE @Ausgabe varchar(100)
+			SELECT @Ausgabe = 'Restbestand von ' + @Name + ' unter 5kg!'
+			RAISERROR (@Ausgabe, 16, 10);
 		END
 	END
 GO
