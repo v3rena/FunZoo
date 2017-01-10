@@ -6,7 +6,7 @@
 -- select * from Strukturmuesli_view
 
 if object_id ('Strukturmuesli_view', 'V') is not null
-	drop trigger Strukturmuesli_view;
+	drop view Strukturmuesli_view;
 go
 
 CREATE VIEW Strukturmuesli_view
