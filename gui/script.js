@@ -10,18 +10,20 @@ $("div.tile").mouseenter(function() {
 	var id = $(this).attr('id');
 	var url = "";
 	
+    
+    
 	if(id == "tile1") {
 		url = "fuetterung.php";
 	} else if(id == "tile2") {
-		url = "tierverwaltung.php"
+		url = "tierverwaltung.php";
 	} else if(id == "tile3") {
-		url = "neuesfutter.php"		
+		url = "neuesfutter.php";		
 	} else if(id == "tile4") {
-		url = "futterbestellung.php"		
+		url = "futterbestellung.php";		
 	} else if(id == "tile5") {
-		url = "pflegerzuweisung.php"		
+		url = "pflegerzuweisung.php";		
 	} else if(id == "tile6") {
-		url = "futterart.php"		
+		url = "futterart.php";		
 	}
 	
 	if(url != "") {
@@ -32,4 +34,6 @@ $("div.tile").mouseenter(function() {
 			}
 		});
 	}
+    
+    alert("fertig");
 });

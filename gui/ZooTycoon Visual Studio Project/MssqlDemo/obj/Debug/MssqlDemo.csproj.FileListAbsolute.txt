@@ -1,0 +1,9 @@
+c:\users\matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\bin\Debug\MssqlDemo.exe.config
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\bin\Debug\MssqlDemo.exe
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\bin\Debug\MssqlDemo.pdb
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.csprojResolveAssemblyReference.cache
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.Form1.resources
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.Properties.Resources.resources
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.csproj.GenerateResource.Cache
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.exe
+C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.pdb
