@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
 --Zoo Tycoon Create Database
---Tobias Nemecek, Verena P�tzl, Katharina Schallerl, Matthias W�gerbauer
+--Tobias Nemecek, Verena Pötzl, Katharina Schallerl, Matthias Wögerbauer
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 --TRIGGER
 --------------------------------------------------------------------------------
 
---1. Trigger: Tiere hinzuf�gen und l�schen nur mittels Stored Procedure
+--1. Trigger: Tiere hinzufügen und löschen nur mittels Stored Procedure
 
 if object_id ('TR_InsertDeleteAnimals', 'TR') is not null
 	drop trigger TR_InsertDeleteAnimals;
