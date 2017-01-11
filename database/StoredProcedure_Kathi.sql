@@ -54,9 +54,12 @@ IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL
     DROP PROCEDURE fuetterung;
 GO
 
-DROP INDEX IF EXISTS tfIndex
-	ON Tier_Futter;
+IF OBJECT_ID ( 'tfIndex', 'I' ) IS NOT NULL
+    DROP INDEX tfIndex ON Tier_Futter;
 GO
+/*DROP INDEX IF EXISTS tfIndex
+	ON Tier_Futter;
+GO*/
 
 CREATE PROCEDURE fuetterung
 	@species varchar(50)
@@ -128,7 +131,7 @@ END TRY
 	END CATCH
 GO
 
-EXECUTE fuetterung Grevyzebra;
+--EXECUTE fuetterung Grevyzebra;
 
 --Select * from Tier;
 --Select * from Tier_Futter;
