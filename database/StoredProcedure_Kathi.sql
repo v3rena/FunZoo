@@ -1,83 +1,137 @@
---TODO: error handling
---vertraue keinem userInput
---ev. Warnung anpassen, fï¿½r welche Tierart wenig Futter tatsï¿½chlich wenig ist.
---Index auf Tier_Futter, beide Foreign Keys
---transaction level: alle selektierten
+--------------------------------------------------------------------------------
+--Zoo Tycoon
+--Tobias Nemecek, Verena Pötzl, Katharina Schallerl, Matthias Wögerbauer
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--STORED PROCEDURE Fuetterung
+-- Autor: Katharina Schallerl (und Tobias Nemeczek)
+
+--Vertraue keinem Userinput: stored procedure
+--Error Handling
+--Warnung, wenn wenig Futter
+--Index auf Tier_Futter
+--Transaction Level Serializable
+
+--------------------------------------------------------------------------------
+--usp_GetErrorInfo
+--https://msdn.microsoft.com/en-us/library/ms175976.aspx
+--------------------------------------------------------------------------------
+
+Use ZooTycoon
+
+IF OBJECT_ID ( 'usp_GetErrorInfo', 'P' ) IS NOT NULL   
+    DROP PROCEDURE usp_GetErrorInfo;  
+GO  
+  
+-- Create procedure to retrieve error information.  
+CREATE PROCEDURE usp_GetErrorInfo  
+AS  
+BEGIN
+	SELECT  
+		ERROR_NUMBER() AS ErrorNumber  
+		,ERROR_SEVERITY() AS ErrorSeverity  
+		,ERROR_STATE() AS ErrorState  
+		,ERROR_PROCEDURE() AS ErrorProcedure  
+		,ERROR_LINE() AS ErrorLine
+		,ERROR_MESSAGE() AS ErrorMessage;  
+END
+GO  
+  
+--BEGIN TRY  
+    -- Generate divide-by-zero error.  
+    --SELECT 1/0;  
+--END TRY  
+--BEGIN CATCH  
+    -- Execute error retrieval routine.  
+    --EXECUTE usp_GetErrorInfo;  
+--END CATCH;
+
+--------------------------------------------------------------------------------
+--Stored Procedure fuetterung
+--------------------------------------------------------------------------------
 
 IF OBJECT_ID ( 'fuetterung', 'P' ) IS NOT NULL
     DROP PROCEDURE fuetterung;
 GO
 
-create procedure fuetterung
-	@species varchar(38)
-as
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+IF OBJECT_ID ( 'tfIndex', 'I' ) IS NOT NULL
+    DROP INDEX tfIndex ON Tier_Futter;
+GO
+/*DROP INDEX IF EXISTS tfIndex
+	ON Tier_Futter;
+GO*/
+
+CREATE PROCEDURE fuetterung
+	@species varchar(50)
+AS
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+CREATE INDEX tfIndex ON Tier_Futter(FK_Tier_TierID, FK_Futter_FutterID);
 
 BEGIN TRY
-BEGIN TRANSACTION;
+	BEGIN TRANSACTION
 
-	set nocount on
-	declare @Restbestand float(38)
-	declare @FutterID numeric(38)
+		SET NOCOUNT ON
+		DECLARE @Restbestand float(38)
+		DECLARE @FutterID numeric(38)
 
-  DECLARE bedarf_cursor CURSOR
-    FOR select Futterbedarf_pro_Tag as fpT from Tier_Futter where FK_Tier_TierID in
-        (select TierID from Tier where Spezies = @species)
+		DECLARE bedarf_cursor CURSOR
+		FOR SELECT Futterbedarf_pro_Tag AS fpT FROM Tier_Futter WHERE FK_Tier_TierID in
+			(SELECT TierID FROM Tier WHERE Spezies = @species)
 
-	select @FutterID = (
-							select FK_Futter_FutterID from Tier_Futter where FK_Tier_TierID =
-								(select TOP 1 TierID from Tier where Spezies = @species)
-						);
+		SELECT @FutterID = (
+								SELECT FK_Futter_FutterID FROM Tier_Futter WHERE FK_Tier_TierID =
+									(SELECT TOP 1 TierID FROM Tier WHERE Spezies = @species)
+							)
 
-  DECLARE @Bedarf float
-  OPEN bedarf_cursor
+		DECLARE @Bedarf float
+		OPEN bedarf_cursor
 
-  SELECT @Restbestand = Bestand from Futter where FutterID = @FutterID
+		SELECT @Restbestand = Bestand FROM Futter WHERE FutterID = @FutterID
 
-  fetch next from bedarf_cursor into @Bedarf
-  while @@FETCH_STATUS = 0
-  BEGIN
-    SET @Restbestand -= @Bedarf
-    fetch next from bedarf_cursor into @Bedarf
-  END
+		FETCH NEXT FROM bedarf_cursor INTO @Bedarf
+		WHILE @@FETCH_STATUS = 0
+			BEGIN
+				SET @Restbestand -= @Bedarf
+				FETCH NEXT FROM bedarf_cursor INTO @Bedarf
+			END
 
-  CLOSE bedarf_cursor
-  DEALLOCATE bedarf_cursor
+		CLOSE bedarf_cursor
+		DEALLOCATE bedarf_cursor
 
+	  /*
+		select @Restbestand = (
+			(select Bestand from Futter where FutterID = @FutterID)
+			- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in
+					(select TierID from Tier where Spezies = @species))
+		);
+	  */
+	--PRINT @Restbestand
 
-  /*
-	select @Restbestand = (
-		(select Bestand from Futter where FutterID = @FutterID)
-		- (select sum(Futterbedarf_pro_Tag) as fpT from Tier_Futter where FK_Tier_TierID in
-				(select TierID from Tier where Spezies = @species))
-	);
-  */
-print @Restbestand
+		IF @Restbestand < 0
+			BEGIN
+				PRINT 'nicht genug Futter'
+			END
+		ELSE
+			BEGIN
+				UPDATE Futter
+					SET Bestand=@Restbestand
+					WHERE FutterID = @FutterID
 
-if @Restbestand < 0
-	begin
-		print 'nicht genug Futter'
-	end
-else
-	begin
-		update Futter
-			set Bestand=@Restbestand
-			where FutterID = @FutterID
-
-		if @Restbestand < 2
-			begin
-				print 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
-			end
-	end
-COMMIT TRANSACTION;
+				IF @Restbestand < 2
+					BEGIN
+						PRINT 'Nur noch weniger als 2kg dieses Futtermittels vorhanden.'
+					END
+			END
+	COMMIT TRANSACTION
 END TRY
-BEGIN CATCH
-	execute usp_GetErrorInfo
-	if @@trancount > 0 rollback transaction
-END CATCH
-go
+	BEGIN CATCH
+		EXECUTE usp_GetErrorInfo
+		IF @@trancount > 0 ROLLBACK TRANSACTION
+	END CATCH
+GO
 
-execute fuetterung Grevyzebra;
+--EXECUTE fuetterung Grevyzebra;
 
 --Select * from Tier;
 --Select * from Tier_Futter;
@@ -85,3 +139,37 @@ execute fuetterung Grevyzebra;
 
 --INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kuegelchen', 'w', 'Braunbaer', '5');
 --INSERT INTO Tier_Futter(FK_Tier_TierID, FK_Futter_FutterID, Futterbedarf_pro_Tag) VALUES ('7','3',0.5);
+
+
+--------------------------------------------------------------------------------
+--Stored Procedure showAll, Verwendung eines weiteren Cursors
+--------------------------------------------------------------------------------
+IF OBJECT_ID ( 'showAll', 'P' ) IS NOT NULL
+    DROP PROCEDURE showAll;
+GO
+
+CREATE PROCEDURE showAll
+AS
+BEGIN TRY
+	DECLARE showAll_cursor CURSOR FORWARD_ONLY READ_ONLY
+		FOR SELECT t.Name, t.Geschlecht, t.Spezies, g.Oekozone
+			FROM Tier AS t
+			LEFT JOIN Gehege AS g ON g.GehegeID = t.FK_Gehege_GehegeID
+			ORDER BY g.Oekozone, t.Spezies, t.Geschlecht
+	DECLARE @Name varchar(50), @Geschlecht char(1), @Spezies varchar(50), @Oekozone varchar(50)
+	OPEN showAll_cursor
+		FETCH NEXT FROM showAll_cursor INTO @Name, @Geschlecht, @Spezies, @Oekozone
+		WHILE @@FETCH_STATUS = 0
+			BEGIN
+				PRINT @Name + ', ' + @Geschlecht + ', ' + @Spezies + ', ' + @Oekozone;
+				FETCH NEXT FROM showAll_cursor INTO @Name, @Geschlecht, @Spezies, @Oekozone
+			END
+	CLOSE showAll_cursor
+	DEALLOCATE showAll_cursor
+END TRY
+BEGIN CATCH
+	EXECUTE usp_GetErrorInfo;
+	THROW
+END CATCH
+
+EXEC showAll;
