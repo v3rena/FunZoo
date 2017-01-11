@@ -137,8 +137,9 @@ EXECUTE fuetterung Grevyzebra;
 --INSERT INTO Tier (Name, Geschlecht, Spezies, FK_Gehege_GehegeID) VALUES ('Kuegelchen', 'w', 'Braunbaer', '5');
 --INSERT INTO Tier_Futter(FK_Tier_TierID, FK_Futter_FutterID, Futterbedarf_pro_Tag) VALUES ('7','3',0.5);
 
+
 --------------------------------------------------------------------------------
---Stored Procedure showAll, Verwendung eines Cursors
+--Stored Procedure showAll, Verwendung eines weiteren Cursors
 --------------------------------------------------------------------------------
 IF OBJECT_ID ( 'showAll', 'P' ) IS NOT NULL
     DROP PROCEDURE showAll;
@@ -148,17 +149,17 @@ CREATE PROCEDURE showAll
 AS
 BEGIN TRY
 	DECLARE showAll_cursor CURSOR FORWARD_ONLY READ_ONLY
-		FOR SELECT t.Name, t.Spezies, g.Oekozone
+		FOR SELECT t.Name, t.Geschlecht, t.Spezies, g.Oekozone
 			FROM Tier AS t
 			LEFT JOIN Gehege AS g ON g.GehegeID = t.FK_Gehege_GehegeID
-			ORDER BY g.Oekozone
-	DECLARE @Name varchar(38), @Spezies varchar(38), @Oekozone varchar(38)
+			ORDER BY g.Oekozone, t.Spezies, t.Geschlecht
+	DECLARE @Name varchar(50), @Geschlecht char(1), @Spezies varchar(50), @Oekozone varchar(50)
 	OPEN showAll_cursor
-		FETCH NEXT FROM showAll_cursor INTO @Name, @Spezies, @Oekozone
+		FETCH NEXT FROM showAll_cursor INTO @Name, @Geschlecht, @Spezies, @Oekozone
 		WHILE @@FETCH_STATUS = 0
 			BEGIN
-				PRINT @Name + ', ' + @Spezies + ', ' + @Oekozone;
-				FETCH NEXT FROM showAll_cursor INTO @Name, @Spezies, @Oekozone
+				PRINT @Name + ', ' + @Geschlecht + ', ' + @Spezies + ', ' + @Oekozone;
+				FETCH NEXT FROM showAll_cursor INTO @Name, @Geschlecht, @Spezies, @Oekozone
 			END
 	CLOSE showAll_cursor
 	DEALLOCATE showAll_cursor
