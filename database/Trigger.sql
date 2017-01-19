@@ -16,7 +16,7 @@ Create Trigger TR_InsertDeleteAnimals
 on  Tier
 instead of insert, delete
 as
-RAISERROR ('Benutzen Sie die Stored Procedures InsertAnimal und DeleteAnimal um Tiere hinzuzuf�gen und zu l�schen!', 16, 10);
+RAISERROR ('Benutzen Sie die Stored Procedures InsertAnimal und DeleteAnimal um Tiere hinzuzufuegen und zu loeschen!', 16, 10);
 GO
 
 --2. Trigger: Futter-Restbestand unter 5kg

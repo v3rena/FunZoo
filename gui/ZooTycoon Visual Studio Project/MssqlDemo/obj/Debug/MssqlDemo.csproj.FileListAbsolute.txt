@@ -7,3 +7,6 @@ C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Deb
 C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.csproj.GenerateResource.Cache
 C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.exe
 C:\Users\Matty\documents\visual studio 2015\Projects\MssqlDemo\MssqlDemo\obj\Debug\MssqlDemo.pdb
+C:\Users\Verena\Desktop\ZooTycoon\gui\ZooTycoon Visual Studio Project\MssqlDemo\bin\Debug\MssqlDemo.exe.config
+C:\Users\Verena\Desktop\ZooTycoon\gui\ZooTycoon Visual Studio Project\MssqlDemo\obj\Debug\MssqlDemo.exe
+C:\Users\Verena\Desktop\ZooTycoon\gui\ZooTycoon Visual Studio Project\MssqlDemo\obj\Debug\MssqlDemo.pdb
