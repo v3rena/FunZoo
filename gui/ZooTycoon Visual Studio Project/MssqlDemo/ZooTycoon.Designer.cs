@@ -1,6 +1,6 @@
-﻿namespace MssqlDemo
+﻿namespace ZooTycoon
 {
-    partial class Form1
+    partial class ZooTycoon
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ZooTycoon));
             this.btn_tierhinzufuegen_hinzufuegen = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -601,7 +601,7 @@
             this.tb_futterhinzufuegen_preis.Size = new System.Drawing.Size(100, 20);
             this.tb_futterhinzufuegen_preis.TabIndex = 23;
             // 
-            // Form1
+            // ZooTycoon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -609,7 +609,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(713, 465);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form1";
+            this.Name = "ZooTycoon";
             this.Text = "ZooTycoon";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

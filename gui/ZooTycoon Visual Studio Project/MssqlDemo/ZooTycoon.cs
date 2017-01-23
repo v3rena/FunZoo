@@ -7,17 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using System.Data.SqlClient;
 
-namespace MssqlDemo
+namespace ZooTycoon
 {
-    public partial class Form1 : Form
+    public partial class ZooTycoon : Form
     {
-        public Form1()
+        public ZooTycoon()
         {
             InitializeComponent();
-
             StoredProcedure.setLogin("gui", "1234", "localhost", "ZooTycoon");
         }
 

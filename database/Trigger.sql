@@ -8,6 +8,8 @@
 
 --1. Trigger: Tiere hinzufügen und löschen nur mittels Stored Procedure
 
+use ZooTycoon;
+
 if object_id ('TR_InsertDeleteAnimals', 'TR') is not null
 	drop trigger TR_InsertDeleteAnimals;
 go

@@ -5,6 +5,8 @@
 -- Usage:
 -- select * from Strukturmuesli_view
 
+use ZooTycoon;
+
 if object_id ('Strukturmuesli_view', 'V') is not null
 	drop view Strukturmuesli_view;
 go

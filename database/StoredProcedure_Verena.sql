@@ -59,22 +59,22 @@ BEGIN
 
 	IF ((SELECT TierID FROM Tier WHERE Name = @Tier_Name) IS NOT NULL)
 		BEGIN
-			RAISERROR ('Name existiert bereits!',10, 1)
+			RAISERROR ('Name existiert bereits!',16, 1)
 			ROLLBACK TRANSACTION
 		END
 	ELSE IF ((SELECT GehegeID FROM Gehege WHERE Name = @Gehege_Name) IS NULL)
 		BEGIN
-			RAISERROR ('Gehege existiert nicht!',10, 1)
+			RAISERROR ('Gehege existiert nicht!',16, 1)
 			ROLLBACK TRANSACTION
 		END
 	ELSE IF ((SELECT TierpflegerID FROM Tierpfleger WHERE Vorname = @Tierpfleger_Vorname AND Nachname = @Tierpfleger_Nachname) IS NULL)
 		BEGIN
-			RAISERROR ('Tierpfleger existiert nicht!',10, 1)
+			RAISERROR ('Tierpfleger existiert nicht!',16, 1)
 			ROLLBACK TRANSACTION
 		END
 	ELSE IF ((SELECT FutterID FROM Futter WHERE Name = @Futter_Name) IS NULL)
 		BEGIN
-			RAISERROR ('Futter existiert nicht!',10, 1)
+			RAISERROR ('Futter existiert nicht!',16, 1)
 			ROLLBACK TRANSACTION
 		END
 

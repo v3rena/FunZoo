@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MssqlDemo.Properties
+namespace ZooTycoon.Properties
 {
 
 

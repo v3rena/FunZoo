@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace MssqlDemo
+namespace ZooTycoon
 {
     class StoredProcedure
     {
@@ -25,20 +25,33 @@ namespace MssqlDemo
             _database = database;
         }
 
+        public static SqlConnection connectToDB()
+        {
+            try
+            {
+                SqlConnection myConnection = 
+                    new SqlConnection ("user id=" + _uid + ";" +
+                                        "password=" + _passw + ";" +
+                                        "server=" + _server + ";" +
+                                        "Trusted_Connection=yes;" +
+                                        "database=" + _database + ";" +
+                                        "connection timeout=5");
+                return myConnection;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
         public static void AddAnimal(String gehegeName, String tierName, String tierGeschlecht, String tierSpezies, String tierpflegerVorname, String tierpflegerNachname, String futterName, int futterBedarf)
         {
 
             try
             {
-                SqlConnection myConnection = new SqlConnection("user id=" + _uid + ";" +
-                                                               "password=" + _passw + ";" +
-                                                               "server=" + _server + ";" +
-                                                               "Trusted_Connection=yes;" +
-                                                               "database=" + _database + ";" +
-                                                               "connection timeout=5");
-
+                SqlConnection myConnection = connectToDB();
                 myConnection.Open();
-
                 MessageBox.Show("Verbindung hergestellt");
 
                 SqlCommand cmd = new SqlCommand("InsertAnimal", myConnection);
@@ -55,15 +68,12 @@ namespace MssqlDemo
                 cmd.Parameters.Add(new SqlParameter("@Futterbedarf_pro_Tag", futterBedarf));
 
                 cmd.ExecuteNonQuery();
-
-
-                MessageBox.Show("Stored Procedure ausgeführt");
-
+                MessageBox.Show("Tier hinzugefuegt");
                 myConnection.Close();
             } 
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ErrorMessages.RaiseSqlError(ex));
             }
         }
 
@@ -80,24 +90,26 @@ namespace MssqlDemo
                                                                "connection timeout=5");
 
                 myConnection.Open();
-
                 MessageBox.Show("Verbindung hergestellt");
-
                 SqlCommand cmd = new SqlCommand("DeleteAnimal", myConnection);
-
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@Tier_Name", tierName));
-
                 cmd.ExecuteNonQuery();
-
-
                 MessageBox.Show("Stored Procedure ausgeführt");
-
                 myConnection.Close();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                MessageBox.Show(ex.Message);
+                StringBuilder errorMessages = new StringBuilder();
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    errorMessages.Append("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+                MessageBox.Show(errorMessages.ToString());
             }
         }
 

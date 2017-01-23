@@ -55,10 +55,11 @@ INSERT INTO Tier_Tierpfleger(FK_Tier_TierID, FK_Tierpfleger_TierpflegerID) VALUE
 --Daten Futter
 ---------------------------------------------
 INSERT INTO Futter(Name, Bestand) VALUES ('Zebra, Muntjaks & Tapire Strukturmuesli 15 kg', '10');
-INSERT INTO Futter(Name, Bestand) VALUES ('Eisbaerenmischung (Gras, Fische)', '5');
-INSERT INTO Futter(Name, Bestand) VALUES ('Braunbaerenmischung (Gras, Walnuesse, Rehfleisch)', '100');
-INSERT INTO Futter(Name, Bestand) VALUES ('Seehundmischung (Fische)', '5');
-INSERT INTO Futter(Name, Bestand) VALUES ('Robbenmischung (Fische)', '7');
+INSERT INTO Futter(Name, Bestand) VALUES ('Eisbaerenmischung', '5');
+INSERT INTO Futter(Name, Bestand) VALUES ('Braunbaerenmischung', '100');
+INSERT INTO Futter(Name, Bestand) VALUES ('Seehundmischung', '5');
+INSERT INTO Futter(Name, Bestand) VALUES ('Robbenmischung', '7');
+INSERT INTO Futter(Name, Bestand) VALUES ('Fleisch', '10');
 
 --DELETE FROM Futter;
 
@@ -91,6 +92,7 @@ INSERT INTO Lieferant_Futter(FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis
 INSERT INTO Lieferant_Futter(FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis) VALUES (3, 1, 2.90);
 INSERT INTO Lieferant_Futter(FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis) VALUES (4, 3, 7.90);
 INSERT INTO Lieferant_Futter(FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis) VALUES (5, 3, 4.90);
+INSERT INTO Lieferant_Futter(FK_Lieferant_LieferantID, FK_Futter_FutterID, Preis) VALUES (1, 6, 5.90);
 
 ---------------------------------------------
 --Daten Bestellung
